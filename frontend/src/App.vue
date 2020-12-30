@@ -1,21 +1,11 @@
 <template>
-  <div id="app">
-    <Navbar></Navbar>
-    <br />
-    <router-view />
-  </div>
+  <v-app>
+    <router-view/>
+  </v-app>
 </template>
 
-<script>
-// @ is an alias to /src
-import Navbar from "@/components/Navbar.vue";
-
-export default {
-  name: "MAIN",
-  components: {
-    Navbar
-  }
-};
+<script> 
+  export default { name: "MAIN"}; 
 </script>
 
 <style lang="scss">
@@ -40,3 +30,4 @@ export default {
   }
 }
 </style>
+  

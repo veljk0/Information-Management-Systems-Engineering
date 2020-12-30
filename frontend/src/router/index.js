@@ -1,27 +1,82 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
-
+import LandingPage from "../views/LandingPage.vue";
+import LoginPage from "../views/LoginPage.vue"
+import RegisterPage from "../views/RegisterPage.vue";
+import UserPage from "../views/UserPage.vue"
+import AdminPage from "../views/AdminPage.vue"
+import AdminLoginPage from "../views/AdminLoginPage.vue"
+import AdminCompanies from "../components/admin/AdminCompanies.vue"
+import AdminFlights from "../components/admin/AdminFlights.vue"
+import AdminTickets from "../components/admin/AdminTickets.vue"
+import CompaniesPage from "../views/CompaniesPage.vue"
+import FlightsPage from "../views/FlightsPage.vue"
+import MyTicketsPage from "../views/MyTicketsPage.vue"
 Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "/companiesPage",
+    name: "CompaniesPage",
+    component: CompaniesPage
+  },
+  {
+    path: "/flightsPage",
+    name: "FlightsPage",
+    component: FlightsPage
+  },
+  {
+    path: "/mytickets",
+    name: "MyTicketsPage",
+    component: MyTicketsPage
+  },
+  {
+    path: "/adminCompanies",
+    name: "AdminCompanies",
+    component: AdminCompanies
+  },
+  
+  {
+    path: "/adminFlights",
+    name: "AdminFlights",
+    component: AdminFlights
+  },
+  {
+    path: "/adminTickets",
+    name: "AdminTickets",
+    component: AdminTickets
+  },
+  {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "LandingPage",
+    component: LandingPage
+  },
+  {
+    path: "/monitoring",
+    name: "AdminPage",
+    component: AdminPage
+  },
+  {
+    path: "/admin",
+    name: "AdminLoginPage",
+    component: AdminLoginPage
   },
   {
     path: "/login",
-    name: "Login",
-    component: Login
+    name: "LoginPage",
+    component: LoginPage
+  },
+  {
+    path: "/userpage",
+    name: "Userpage",
+    component: UserPage
   },
   {
     path: "/register",
-    name: "Register",
-    component: Register
+    name: "RegisterPage",
+    component: RegisterPage
   },
+  
   {
     path: "/about",
     name: "About",

@@ -1,9 +1,14 @@
 package com.airline.backend.entities;
 
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
 
 @Entity
 public class User {
@@ -15,6 +20,10 @@ public class User {
     private String secondName;
     private String email;
     private String password;
+    @OneToMany(targetEntity = Ticket.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userID", referencedColumnName = "id")
+    private List<Ticket> tickets;
+
 
     public User() {}
 
@@ -61,10 +70,24 @@ public class User {
         this.password = password;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+   
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
     @Override
     public String toString() {
         return "|ID: "+ id + "|" + firstName + "|" + this.secondName + "|" + this.email + "|" + "\n";
     }
+
 }
 
     

@@ -3,11 +3,22 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import vuetify from "./plugins/vuetify";
+import VModal from 'vue-js-modal'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+// Install BootstrapVue
+Vue.use(BootstrapVue)
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+Vue.use(VModal)
 Vue.config.productionTip = false;
-
+export const bus = new Vue();
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App)
-}).$mount('#app');
+}).$mount("#app");
