@@ -49,7 +49,7 @@ export default {
         console.log("ADMIN_PW: " + this.password);
 
         this.axios
-            .get("http://localhost:8085/admins/getAll")
+            .get("http://localhost:8000/admins/getAll")
             .then(response => {
             console.log("Admins loaded...");
             console.log("set size: " + response.data.length);

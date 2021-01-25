@@ -51,7 +51,7 @@
             <tr v-for="ticket in tickets" :key="ticket.ticketID">
                <td>{{ ticket.ticketID }}</td>
                <td>{{ ticket.price }} €</td>
-               <td><button v-b-modal.notify type="button" @click="buy(ticket.ticketID)" class="btn btn-success">buy</button></td>
+               <td><button v-b-modal.notify type="button" @click="buyMongo(ticket.ticketID)" class="btn btn-success">buy</button></td>
           </tr>
           </tbody>
         </table>  
@@ -165,7 +165,7 @@ export default {
   methods:{
 
     searchCity(){
-       axios.get("http://localhost:8085/flights/findFlights", { params: { city: this.city} })
+       axios.get("http://localhost:8000/flights/findFlights", { params: { city: this.city} })
           .then((response) => {
             console.log("LOADING FLIGHTS FOR " + this.city);
             this.letovi = response.data
@@ -177,14 +177,14 @@ export default {
     },
     
     loadUserName(){
-      axios.get("http://localhost:8085/users/getLogi")
+      axios.get("http://localhost:8000/users/getLogi")
         .then(response => {this.username = response.data.username})
         .catch(function(error) {console.log(error);})
         .then(function() {});
       },
     
     loadFlights(){
-       axios.get("http://localhost:8085/flights/getAll")
+       axios.get("http://localhost:8000/flights/getAll")
         .then(response => {
           console.log("GET_FLIGHTS");
           console.log(response.data);
@@ -196,10 +196,19 @@ export default {
         .then(function() {});
     },
 /////////////////////////////////////////////////////
+buyMongo(tiket){
+   this.axios
+            .get("http://localhost:8000/tickets/buyTicket/" + tiket +"/" + this.flightID + "/" + this.username)
+            .then(response => { console.log("TICKET ID MONGOOO: "+ response.data) })
+            .catch(function(error) { console.log(error); })
+            .then(function() {});
+  
+},
+
 buy(tiketa){
-        console.log(this.ticketID);
+        console.log("MONGO STRING......"+this.ticketID);
         
-        axios.get("http://localhost:8085/users/getUser", { params: {email: this.username }})
+        axios.get("http://localhost:8000/users/getUser", { params: {email: this.username }})
         .then((response) => {
           console.log("LOADING USER: ");
           this.fakeUser = response.data;
@@ -208,9 +217,9 @@ buy(tiketa){
           this.user.secondName = this.fakeUser.secondName
           this.user.email = this.fakeUser.email
           this.user.password = this.fakeUser.password
-          console.log(this.user);
+          console.log("MONGO USER........ " + this.user);
 
-          axios.get("http://localhost:8085/flights/getFlight", { params: { flightID: this.flightID} })
+          axios.get("http://localhost:8000/flights/getFlight", { params: { flightID: this.flightID} })
           .then((response) => {
             console.log("LOADING FLIGHT: ");
             this.fakeFlight = response.data;
@@ -225,7 +234,7 @@ buy(tiketa){
           .catch(function(error) {console.log(error);})
           .then(function() {});
           
-          axios.get("http://localhost:8085/tickets/getTicket", { params: { ticketID: tiketa } })
+          axios.get("http://localhost:8000/tickets/getTicket", { params: { ticketID: tiketa } })
           .then((response) => {
             console.log("LOADING TICKET: ");
             this.fakeTicket = response.data;
@@ -234,7 +243,7 @@ buy(tiketa){
             this.ticket.sold = true
             this.ticket.flight = this.flight
             this.ticket.user = this.user
-            console.log(this.ticket);
+            console.log("LOADED MONGO TICKET......" +this.ticket);
           })
           .catch(function(error) {console.log(error);})
           .then(function() {});
@@ -247,22 +256,26 @@ buy(tiketa){
         })
         .then(function() {});
 
-        setTimeout(() => { this.doIt() }, 5000);
+        setTimeout(() => { this.doIt() }, 2500);
         
       },
 
 
       doIt(){
-        this.axios.post("http://localhost:8085/tickets/updateTicket", this.ticket, {headers: {}})
-                    .then(res => { console.log(res);})
+        console.log("ALOOO BREE TICKET: " + this.ticket.flight )
+        this.axios.post("http://localhost:8000/tickets/updateTicket", this.ticket, {headers: {}})
+                    .then(res => { 
+                      console.log(res);
+                      this.axios.get("http://localhost:8000/flights/updateSeat", { params: { flightID: this.flightID }})
+                        .then((response) => {console.log(response.data)})
+                        .catch(function(error) { console.log(error); })
+                        .then(function() {});
+                        this.showNotification();
+                      
+                      })
                         .catch(err => { console.log(err.response);});
 
-        this.axios.get("http://localhost:8085/flights/updateSeat", { params: { flightID: this.flightID }})
-        .then((response) => {console.log(response.data)})
-        .catch(function(error) { console.log(error); })
-        .then(function() {});
-        window.location.reload();
-        this.showNotification();
+        
       },
       
       ////////////////////////////////////////////////////////////////////////////////////////
@@ -278,7 +291,7 @@ buy(tiketa){
     showTickets(id){
       this.flightID = id
       console.log("FLIGHT: " + this.flightID)
-      axios.get("http://localhost:8085/tickets/getFlightAvailableTickets", { params: { flightId: id } })
+      axios.get("http://localhost:8000/tickets/getFlightAvailableTickets", { params: { flightId: id } })
         .then((response) => {
          console.log(response.data);
          this.tickets = response.data;  

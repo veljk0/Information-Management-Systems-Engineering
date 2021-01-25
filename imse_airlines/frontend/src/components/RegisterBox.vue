@@ -57,14 +57,14 @@ export default {
 
   methods: {
     addUser(e) {
-      axios.get("http://localhost:8085/users/check", { params: { email: this.user.email } })
+      axios.get("http://localhost:8000/users/check", { params: { email: this.user.email } })
         .then((response) => {
           console.log("DOES USER ALREADY EXISTS IN DB?");
           if (response.data == true) alert("This user already exists, try to login");
           else {
               alert("User successfully created!");
               console.log(response.data);
-                this.axios.post("http://localhost:8085/users/addUser", this.user, {headers: {}})
+                this.axios.post("http://localhost:8000/users/addUser", this.user, {headers: {}})
                     .then(res => { console.log(res);})
                         .catch(err => { console.log(err.response);});
             }

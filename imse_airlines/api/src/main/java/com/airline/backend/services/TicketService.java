@@ -7,7 +7,6 @@ import com.airline.backend.entities.Ticket;
 import com.airline.backend.repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class TicketService {
@@ -52,7 +51,7 @@ public class TicketService {
     }
     
     
-    public List<Ticket> getFlightAvailableTickets(@RequestParam int flightId){
+    public List<Ticket> getFlightAvailableTickets(int flightId){
     	List<Ticket> tickets = ticketRepository.findAll();
     	List<Ticket> flilter1 = tickets.stream().filter(t -> t.getFlight().getFlightID() == flightId).collect(Collectors.toList());
     	List<Ticket> flilter2 = flilter1.stream().filter(f -> f.getSold() == false).collect(Collectors.toList());
@@ -65,10 +64,4 @@ public class TicketService {
 	     Ticket result = tickets.stream().filter(f -> f.getTicketID() == ticketID).findFirst().orElse(null);
 	     return result;
     }
-
-
-
-
-	
-    
 }

@@ -35,6 +35,15 @@ public class Flight {
     private List<Ticket> tickets;
 
     public Flight() {}
+    
+    public Flight(String departureCity, Date departureDate, String arrivalCity, Date arrivalDate, Company company) {
+    	this.departureCity = departureCity;
+        this.departureDate = departureDate;
+        this.arrivalCity = arrivalCity;
+        this.arrivalDate = arrivalDate;
+        this.company = company;
+    
+    }
 
     public Flight(int flightID, String departureCity, Date departureDate, String arrivalCity, Date arrivalDate, Company company) {
         this.flightID = flightID;

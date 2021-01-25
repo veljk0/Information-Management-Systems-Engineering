@@ -14,7 +14,7 @@
             <tr v-for="ticket in tickets" :key="ticket.ticketID">
                <td>{{ ticket.ticketID }}</td>
                <td>{{ ticket.price }} €</td>
-               <td><button v-b-modal.details type="button" @click="showDetails(ticket.ticketID)" class="btn btn-success">details</button></td>
+               <td><button v-b-modal.details type="button" @click="mongoDetails(ticket.ticketID)" class="btn btn-success">details</button></td>
             </tr>
           </tbody>
         </table>  
@@ -63,9 +63,23 @@ export default {
   },
   
   methods:{
+    mongoDetails(id){
+       this.axios
+            .get("http://localhost:8000/tickets/details/" + id)
+            .then(response => { 
+                console.log("DETALIS OF TICKET: "+ response.data)
+                this.flight.departureCity = response.data.departureCity
+                  this.flight.arrivalCity = response.data.arrivalCity
+                   this.flight.departureDate = response.data.departureDate
+                    this.flight.arrivalDate = response.data.arrivalDate
+              
+              })
+            .catch(function(error) { console.log(error); })
+            .then(function() {});
+    },
 
     showDetails(id){
-       axios.get("http://localhost:8085/flights/ticketFlight", {params: {ticketID: id }})
+       axios.get("http://localhost:8000/flights/ticketFlight", {params: {ticketID: id }})
         .then((response) => {
           console.log("loading details" + response.data)
           this.flight.departureCity = response.data.departureCity
@@ -80,10 +94,10 @@ export default {
       
       
       loadUser(){
-      axios.get("http://localhost:8085/users/getLogi")
+      axios.get("http://localhost:8000/users/getLogi")
         .then(response => {
           this.username = response.data.username
-          axios.get("http://localhost:8085/users/getUser", {params: {email: this.username }})
+          axios.get("http://localhost:8000/users/getUser", {params: {email: this.username }})
           .then((response) => { this.tickets = response.data.tickets})
           .catch(function(error) {console.log(error);})
           .then(function() {});

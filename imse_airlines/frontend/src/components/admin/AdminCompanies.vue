@@ -228,12 +228,12 @@ export default {
       console.log("DATE FROM: " + this.dateFrom)
       console.log("DATE TO: " + this.dateTo)
       console.log("FOR COMPANY: " + this.companyname)
-      axios.get("http://localhost:8085/companies/getCompany", { params: { name: this.companyname }})
+      axios.get("http://localhost:8000/companies/getCompany", { params: { name: this.companyname }})
       .then((response) => { 
           console.log(response.data)
           this.mycompany = response.data
           console.log("babala: " + this.mycompany.companyId)
-          axios.get("http://localhost:8085/flights/getFlightsDate", {
+          axios.get("http://localhost:8000/flights/getFlightsDate", {
             params: { companyId: this.mycompany.companyId, from : this.dateFrom, to: this.dateTo }
           })
           .then((response) => { 
@@ -250,7 +250,7 @@ export default {
     },
 
     addCompany(){
-      this.axios.post("http://localhost:8085/companies/addCompany", this.company, {headers: {}})
+      this.axios.post("http://localhost:8000/companies/addCompany", this.company, {headers: {}})
                     .then(res => { console.log(res);})
                         .catch(err => { console.log(err.response);});
                         window.location.reload()
@@ -258,7 +258,7 @@ export default {
     },
 
     deleteCompany(){
-      axios.get("http://localhost:8085/companies/deleteCompany", {
+      axios.get("http://localhost:8000/companies/deleteCompany", {
                     params: { name: this.company.companyName }
                     })
                     .then(function(response) {
@@ -292,7 +292,7 @@ export default {
     
     showTickets(id){
       console.log(id)
-      axios.get("http://localhost:8085/tickets/getFlightTickets", { params: { flightId: id } })
+      axios.get("http://localhost:8000/tickets/getFlightTickets", { params: { flightId: id } })
         .then((response) => {
          console.log(response.data);
          this.tickets = response.data;  
@@ -306,7 +306,7 @@ export default {
 
     loadCompanies() {
       axios
-        .get("http://localhost:8085/companies/getAll")
+        .get("http://localhost:8000/companies/getAll")
         .then(response => {
           console.log("GET_COMPANIES");
           console.log(response.data);

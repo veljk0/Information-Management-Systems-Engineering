@@ -47,7 +47,7 @@ export default {
         console.log("EMAIL BRE: " + this.username);
 
         this.axios
-            .get("http://localhost:8085/users/getAll")
+            .get("http://localhost:8000/users/getAll")
             .then(response => {
             console.log("ListOfUsers loaded...");
             console.log("KURCINELA819 " + response.data.length);
@@ -57,7 +57,7 @@ export default {
                 response.data[index].password == this.password
                 ) {
                 this.$router.replace("userpage");
-                axios.get("http://localhost:8085/users/login", {
+                axios.get("http://localhost:8000/users/login", {
                     params: { username: this.username }
                     })
                     .then(function(response) {

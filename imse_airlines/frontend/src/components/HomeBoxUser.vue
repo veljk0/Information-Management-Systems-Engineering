@@ -74,7 +74,7 @@ export default {
 
      getToken(){
        axios
-        .get("http://localhost:8085/users/getLogi")
+        .get("http://localhost:8000/users/getLogi")
         .then((response) => {
           console.log("Getting user token");
           this.user = response.data.username;

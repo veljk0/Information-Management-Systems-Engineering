@@ -7,6 +7,7 @@
       <br/>
       <router-link to="/admin"><button v-b-modal.tickets type="button"  class="btn btn-primary">ADMIN PANEL</button></router-link>
       <button v-b-modal.tickets type="button" @click="fill" class="btn btn-primary">FILL DATABASE</button>
+      <button v-b-modal.tickets type="button" @click="migrate" class="btn btn-primary">MYSQL TO MONGODB</button>
       <br/>
       <br/>
       <br/>
@@ -52,8 +53,16 @@ Vue.use(VueAxios, axios);
 export default {
   components:{DefaultNavbar},
   methods:{
+  
+  migrate(){
+    this.axios.get("http://localhost:8000/database/migrate")
+            .then(response => { console.log(response)})
+            .catch(function(error) { console.log(error); })
+            .then(function() {});
+  },
+
     fill(){
-       this.axios.get("http://localhost:8085/database/fill")
+       this.axios.get("http://localhost:8000/database/fill")
             .then(response => { console.log(response)})
             .catch(function(error) { console.log(error); })
             .then(function() {});

@@ -33,7 +33,7 @@ export default {
   methods: {
     loadCompanies() {
       axios
-        .get("http://localhost:8085/companies/getAll")
+        .get("http://localhost:8000/companies/getAll")
         .then(response => {
           console.log("GET_COMPANIES");
           console.log(response.data);

@@ -15,10 +15,11 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     private Token token = new Token("empty", false);
 
     public String login(String username){
-        if(token.getFlag() == true && token.getUsername().equals(username)) return "user already logged in";
+        if(token.getFlag() && token.getUsername().equals(username)) return "user already logged in";
         
         token.setUsername(username);
         token.setFlag(true);
@@ -79,4 +80,5 @@ public class UserService {
         userRepository.save(user);
         return "ticket " + ticket.getTicketID() + " bought for user " + user.getId();
     }
+
 }

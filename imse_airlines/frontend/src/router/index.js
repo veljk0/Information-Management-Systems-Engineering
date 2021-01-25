@@ -13,8 +13,12 @@ import FlightsPage from "../views/FlightsPage.vue"
 import MyTicketsPage from "../views/MyTicketsPage.vue"
 
 import AdminUsers from "../components/admin/AdminUsers.vue"
+import Axios from "axios";
+
 
 Vue.use(VueRouter);
+
+Axios.defaults.baseURL = 'http://localhost:8080/api/';
 
 const routes = [
   {
@@ -92,10 +96,6 @@ const routes = [
   }
 ];
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes
-});
+const router = new VueRouter({routes});
 
 export default router;

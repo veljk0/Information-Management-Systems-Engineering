@@ -57,7 +57,7 @@
                     </v-form>
             </v-form>
             <br/><br/>
-            <button type="button" @click="createFlight" class="btn btn-success">create flight</button>
+            <button type="button" @click="createMongoFlight" class="btn btn-success">create flight</button>
         </div>
         </div>
     </modal>
@@ -73,7 +73,7 @@
                     
             </v-form>
             <br/><br/>
-            <button type="button" @click="createTicket" class="btn btn-success">create ticket</button>
+            <button type="button" @click="mongoTicket" class="btn btn-success">create ticket</button>
         </div>
         </div>
     </modal>
@@ -140,11 +140,29 @@ components:{AdminNavbar},
 
     refresh(){ window.location.reload() },
 
+    createMongoFlight(){
+      this.axios
+            .get("http://localhost:8000/flights/addNewFlight/" + this.companyName + "/" + this.flight.departureCity + "/" + 
+            this.flight.departureDate + "/"+this.flight.arrivalCity +"/"+this.flight.arrivalDate)
+            .then(response => { console.log("FLIGHT CREATED: "+ response.data) })
+            .catch(function(error) { console.log(error); })
+            .then(function() {});
+      
+    },
+
+    mongoTicket(){
+      this.axios
+            .get("http://localhost:8000/tickets/addNewTicket/" + this.flightId + "/" + this.price)
+            .then(response => { console.log("TICKET CREATED: "+ response.data) })
+            .catch(function(error) { console.log(error); })
+            .then(function() {});
+    },
+
     createTicket(){
         console.log(this.flightId);
         console.log(this.price);
         axios
-        .get("http://localhost:8085/flights/getFlight", {
+        .get("http://localhost:8000/flights/getFlight", {
           params: {
             flightID: this.flightId
           }
@@ -163,7 +181,7 @@ components:{AdminNavbar},
           this.fakeFlight2.flight = this.fakeFlight3;
           console.log("Final Product");
           console.log(this.fakeFlight2);
-           this.axios.post("http://localhost:8085/tickets/addTicket", this.fakeFlight2, {headers: {}})
+           this.axios.post("http://localhost:8000/tickets/addTicket" + this.flightId, this.fakeFlight2, {headers: {}})
                     .then(res => { console.log(res);})
                         .catch(err => { console.log(err.response);});
 
@@ -177,10 +195,13 @@ components:{AdminNavbar},
        
     },
 
+
+    
+
     createFlight(){
          console.log(this.flight);
          console.log(this.companyName);
-         axios.get("http://localhost:8085/companies/getCompany", {
+         axios.get("http://localhost:8000/companies/getCompany", {
           params: {
             name: this.companyName
           }
@@ -198,7 +219,7 @@ components:{AdminNavbar},
             this.flight.company = this.fakeCompany2
             console.log("Double CHECK");
             console.log(this.flight);
-            this.axios.post("http://localhost:8085/flights/addFlight", this.flight, {headers: {}})
+            this.axios.post("http://localhost:8000/flights/addFlight", this.flight, {headers: {}})
                     .then(res => { console.log(res);})
                         .catch(err => { console.log(err.response);});
             
@@ -215,7 +236,7 @@ components:{AdminNavbar},
 
     loadFlights() {
       axios
-        .get("http://localhost:8085/flights/getAll")
+        .get("http://localhost:8000/flights/getAll")
         .then(response => {
           console.log("GET_FLIGHTS");
           console.log(response.data);

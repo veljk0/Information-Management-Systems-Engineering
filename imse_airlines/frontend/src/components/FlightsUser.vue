@@ -61,7 +61,7 @@ export default {
   methods: {
     sendToken() {
       axios
-        .get("http://localhost:8085/users/getLogi")
+        .get("http://localhost:8000/users/getLogi")
         .then(response => {
           console.log("GET_TOKEN");
           console.log(response.data.username);
@@ -75,7 +75,7 @@ export default {
 
     loadFlights() {
       axios
-        .get("http://localhost:8085/flights/getAll")
+        .get("http://localhost:8000/flights/getAll")
         .then(response => {
           console.log("GET_FLIGHTS");
           console.log(response.data);

@@ -2,16 +2,22 @@ package com.airline.backend.controllers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.airline.backend.entities.Admin;
 import com.airline.backend.entities.Company;
 import com.airline.backend.entities.Flight;
 import com.airline.backend.entities.User;
-import com.airline.backend.services.AdminService;
-import com.airline.backend.services.CompanyService;
-import com.airline.backend.services.FlightService;
-import com.airline.backend.services.UserService;
+import com.airline.backend.migration.DatabaseMigrator;
+import com.airline.backend.migration.collections.MongoAdmin;
+import com.airline.backend.migration.services.MongoAdminService;
+import com.airline.backend.migration.services.MongoUserService;
+import com.airline.backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +40,12 @@ public class DatabaseController {
     @Autowired
     private FlightService flightService;
 
+    @Autowired
+    private TicketService ticketService;
+
+    @Autowired
+    private DatabaseMigrator databaseMigrator;
+
     @GetMapping(value = "/fill")
     public void fill() throws ParseException {
    
@@ -54,7 +66,7 @@ public class DatabaseController {
         userService.addUser(user1);
         User user2 = new User("Jelena", "Mikic", "jelena@gmail.com", "123456");
         userService.addUser(user2);
-        User user3 = new User("Test", "User", "test@user.com", "test123");
+        User user3 = new User("Test", "User", "test@user.com", "123");
         userService.addUser(user3);
         /**************ADMINS**************************/ 
         Admin admin1 = new Admin(1, "admin", "admin");
@@ -80,5 +92,17 @@ public class DatabaseController {
         flightService.createFlight(flight6);
         flightService.createFlight(flight7);
         flightService.createFlight(flight8);
-    }       
+    }
+
+    @GetMapping("/migrate")
+    public String migrateDatabase() {
+        databaseMigrator.migrateAdmin(adminService);
+        databaseMigrator.migrateCompanies(companyService);
+        databaseMigrator.migrateUsers(userService);
+        databaseMigrator.migrateFlights(flightService);
+        databaseMigrator.migrateTickets(ticketService);
+
+        databaseMigrator.dropTables(adminService, companyService, userService, ticketService, flightService);
+       return "migrated!";
+    }
 }

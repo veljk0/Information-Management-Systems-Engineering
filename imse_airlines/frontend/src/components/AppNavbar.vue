@@ -60,7 +60,7 @@ export default {
   methods: {
 
     loadUser(){
-      axios.get("http://localhost:8085/users/getLogi")
+      axios.get("http://localhost:8000/users/getLogi")
         .then(response => {
           console.log("GET_USER");
           console.log(response.data);
@@ -74,7 +74,7 @@ export default {
 
 
     logout(){
-        axios.get("http://localhost:8085/users/logout")
+        axios.get("http://localhost:8000/users/logout")
         .then(response => { console.log(response.data);})
         .catch(function(error) { console.log(error); })
         .then(function() {});

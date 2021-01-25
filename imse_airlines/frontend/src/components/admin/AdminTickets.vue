@@ -8,8 +8,8 @@
     </b-form-group> 
     <div>
       <button @click="cFlights(companyName)" v-b-modal.modal-scrollable2 type="button" class="btn btn-primary">Search company flights</button>
-      <button @click="cTickets(companyName)" v-b-modal.modal-scrollable3 type="button" class="btn btn-primary">See company sold tickets</button>
-      <button @click="cSum(companyName)" v-b-modal.modal-scrollable4  type="button" class="btn btn-primary">See company profit</button>
+      <button @click="mongoSold()" v-b-modal.modal-scrollable3 type="button" class="btn btn-primary">See company sold tickets</button>
+      <button @click="mongoProfit()" v-b-modal.modal-scrollable4  type="button" class="btn btn-primary">See company profit</button>
       <button type="button" @click="ticketCard" class="btn btn-primary">create new ticket</button>
     </div>
     <h2>Current flights</h2>
@@ -200,7 +200,7 @@ export default {
         console.log(this.flightId);
         console.log(this.price);
         axios
-        .get("http://localhost:8085/flights/getFlight", {
+        .get("http://localhost:8000/flights/getFlight", {
           params: {
             flightID: this.flightId
           }
@@ -219,7 +219,7 @@ export default {
           this.fakeFlight2.flight = this.fakeFlight3;
           console.log("Final Product");
           console.log(this.fakeFlight2);
-           this.axios.post("http://localhost:8085/tickets/addTicket", this.fakeFlight2, {headers: {}})
+           this.axios.post("http://localhost:8000/tickets/addTicket", this.fakeFlight2, {headers: {}})
                     .then(res => { console.log(res);})
                         .catch(err => { console.log(err.response);});
 
@@ -235,7 +235,7 @@ export default {
     cSum(pacov){
        console.log(pacov)
         axios
-        .get("http://localhost:8085/companies/getCompany", {
+        .get("http://localhost:8000/companies/getCompany", {
           params: {
             name: pacov
           }
@@ -244,7 +244,7 @@ export default {
           console.log("SUM LOADING");
           this.searchCompany = response.data 
           console.log(this.searchCompany);
-          axios.get("http://localhost:8085/flights/getCompanyWin", {
+          axios.get("http://localhost:8000/flights/getCompanyWin", {
           params: {
             companyId: this.searchCompany.companyId
           }
@@ -268,10 +268,36 @@ export default {
 
     },
 
+    ////////////////////////////////////////////////////////////////////////////
+    mongoSold(){
+       this.axios
+            .get("http://localhost:8000/flights/mongoSold/" + this.companyName)
+            .then(response => { 
+              console.log("SOLD TICKETS ARE MONGO FRUIT: "+ response.data)
+              this.companyTickets = response.data 
+            })
+            .catch(function(error) { console.log(error); })
+            .then(function() {});
+
+    },
+
+    mongoProfit(){
+       this.axios
+            .get("http://localhost:8000/flights/mongoProfit/" + this.companyName)
+            .then(response => { 
+              console.log("OUR PROFIT SELLING FRUIT: "+ response.data)
+              this.sum = response.data 
+            })
+            .catch(function(error) { console.log(error); })
+            .then(function() {});
+
+    },
+    ////////////////////////////////////////////////////////////////////////////
+
     cTickets(pacov){
       console.log(pacov)
         axios
-        .get("http://localhost:8085/companies/getCompany", {
+        .get("http://localhost:8000/companies/getCompany", {
           params: {
             name: pacov
           }
@@ -280,7 +306,7 @@ export default {
           console.log("SOLD TICKETS LOADING");
           this.searchCompany = response.data 
           console.log(this.searchCompany);
-          axios.get("http://localhost:8085/flights/getCompanySoldTickets", {
+          axios.get("http://localhost:8000/flights/getCompanySoldTickets", {
           params: {
             companyId: this.searchCompany.companyId
           }
@@ -306,17 +332,11 @@ export default {
     cFlights(pacov){
         console.log(pacov)
         axios
-        .get("http://localhost:8085/companies/getCompany", {
-          params: {
-            name: pacov
-          }
-        })
+        .get("http://localhost:8000/companies/getFlights/" + this.companyName)
         .then((response) => { 
           console.log("PACOV");
-          
-          this.searchCompany = response.data 
-          console.log(this.searchCompany);
-          this.flightsOfCompany = this.searchCompany.flights
+          console.log(response.data.length);
+          this.flightsOfCompany = response.data
         })
         .catch(function(error) {
           console.log(error);
@@ -327,7 +347,7 @@ export default {
 
     showTickets(id){
       console.log(id)
-      axios.get("http://localhost:8085/tickets/getFlightTickets", { params: { flightId: id } })
+      axios.get("http://localhost:8000/tickets/getFlightTickets", { params: { flightId: id } })
         .then((response) => {
          console.log(response.data);
          this.tickets = response.data;  
@@ -342,7 +362,7 @@ export default {
     
     loadFlights() {
       axios
-        .get("http://localhost:8085/flights/getAll")
+        .get("http://localhost:8000/flights/getAll")
         .then(response => {
           console.log("GET_FLIGHTS");
           console.log(response.data);

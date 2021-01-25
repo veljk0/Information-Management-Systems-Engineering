@@ -48,7 +48,7 @@ export default {
   methods: {
     loadFlights() {
       axios
-        .get("http://localhost:8085/flights/getAll")
+        .get("http://localhost:8000/flights/getAll")
         .then(response => {
           console.log("GET_FLIGHTS");
           console.log(response.data);
